@@ -5,7 +5,7 @@ const GuestCards = (props) => {
     const [toggle, setToggle] = useState(false);
 
     return(
-        <div className={toggle ? "card-container" : "card-container card-flip"} onClick={() => setToggle(!toggle)}>
+        <div className={toggle ? `card-container ${props.class}`  : `card-container ${props.class} card-flip`} onClick={() => setToggle(!toggle)}>
             <div className="card-flip">
 
                 {!toggle ?

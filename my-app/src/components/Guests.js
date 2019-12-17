@@ -9,11 +9,12 @@ class Guests extends React.Component {
     constructor() {
         super()
         this.state = {
-            guests: [],
+            guestsList: [],
+            guestsCards: [],
             blackList: [],
-            firstNames: [],
-            lastNames: [],
-            jobs: []
+            nameGenerators: [],
+            jobs: [],
+            didUpdate: false
         }
     }
 
@@ -22,9 +23,9 @@ class Guests extends React.Component {
     }
 
     getRandomName = () => {
-        let num1 = this.getRandomInt(this.state.firstNames.length)
-        let num2 = this.getRandomInt(this.state.lastNames.length)
-        let name = `${this.state.firstNames[num1]} ${this.state.lastNames[num2]}`
+        let num1 = this.getRandomInt(this.state.nameGenerators.length)
+        let num2 = this.getRandomInt(this.state.nameGenerators.length)
+        let name = `${this.state.nameGenerators[num1]} ${this.state.nameGenerators[num2]}`
         return name
     }
 
@@ -38,23 +39,32 @@ class Guests extends React.Component {
     }
 
     generateGuests = () => {
-        if(this.state.guests.length <= 10) {
-            let guests = []
+        let newList = [...this.state.guestsList]
+        if(this.state.guestsCards.length <= 10) {
             for (let i = 0; i < 90; i++) {
                 let name = this.getRandomName()
                 let job = this.getRandomJob()
-                guests.push(<GuestCard key={i+10}  name={name}  job={job}/>)
-                
+                newList.push({name: name, job: job, originalGuest: false})
             }
+            newList.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             this.setState({
-                guests: [...this.state.guests.concat(guests) ]
+                guestsList: newList,
+                didUpdate: true
             })
         }
     }
-
+        
     getCheckBoxValue = (event) => {
-        console.log(event.target.checked)
-        console.log(event.target.name)
+        if(event.target.checked){
+            let index = this.state.firstNames.indexOf(event.target.name)
+            this.setState({
+                firstNames: this.state.firstNames.filter((_, i) => i !== index)
+            })
+        } else if(!event.target.checked){
+            this.setState({
+                firstNames: [...this.state.firstNames, event.target.name]
+            })
+        }
     }
 
     componentDidMount(){
@@ -65,7 +75,8 @@ class Guests extends React.Component {
             for (let i = 0; i < res.data.length; i++) {
                 nameList.push(res.data[i].name.split(' '))
                 jobList.push(res.data[i].company.catchPhrase.split(' '))
-                this.setState({guests: [...this.state.guests, <GuestCard key={i} name={res.data[i].name} job={res.data[i].company.catchPhrase}/>]})              
+                this.setState({guestsList: [...this.state.guestsList, {name: res.data[i].name, job: res.data[i].company.catchPhrase, originalGuest: true}]})
+                this.setState({guestsCards: [...this.state.guestsCards, <GuestCard key={i} name={res.data[i].name} job={res.data[i].company.catchPhrase}/>]})              
             }
             this.setState({jobs: jobList.flat()}) 
             return nameList
@@ -74,38 +85,53 @@ class Guests extends React.Component {
             for (let i = 0; i < nameList.length; i++) {
                 if(nameList[i][0] === "Mrs." || nameList[i][0] === "Mr." || nameList[i][0] === "Ms." || nameList[i][0] === "Miss") {
                     this.setState({
-                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][1]} getCheckBoxValue={this.getCheckBoxValue}/>/*nameList[i][0]*/],
-                        firstNames: [...this.state.firstNames, nameList[i][1]]
+                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][1]} getCheckBoxValue={this.getCheckBoxValue}/>]
                     })
                 }
                 else {
                     this.setState({
-                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][0]} getCheckBoxValue={this.getCheckBoxValue}/>/*nameList[i][0]*/],
-                        firstNames: [...this.state.firstNames, nameList[i][0]]
+                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][0]} getCheckBoxValue={this.getCheckBoxValue}/>]
                     })
                 }
-                for (let j = 1; j < nameList[i].length; j++) {
+                for (let j = 0; j < nameList[i].length; j++) {
                     if(nameList[i][0] === "Mrs." || nameList[i][0] === "Mr." || nameList[i][0] === "Ms." || nameList[i][0] === "Miss") {
                         if(nameList[i][j].length > 1 && nameList[i][j+1] != undefined){
                             this.setState({
-                                lastNames: [...this.state.lastNames, nameList[i][j+1]]
+                                nameGenerators: [...this.state.nameGenerators, nameList[i][j+1]]
                             })
                         }
-                    } else {
+                    } 
+                    else {
                         if(nameList[i][j].length > 1){
                             this.setState({
-                                lastNames: [...this.state.lastNames, nameList[i][j]]
+                                nameGenerators: [...this.state.nameGenerators, nameList[i][j]]
                             })
                         }
                     }
                 } 
             }
-            console.log(this.state.firstNames)
-            console.log(this.state.lastNames)
         })
         .catch(err=>{
             console.log(err)
         })
+    }
+
+    componentDidUpdate(){
+        if(this.state.didUpdate) {
+            let newCards = []
+            for (let j = 0; j < this.state.guestsList.length; j++) {
+                if(this.state.guestsList[j].originalGuest){
+                    newCards.push(<GuestCard key={j} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job} class={"large"}/>)
+                } 
+                else {
+                    newCards.push(<GuestCard key={j} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job}/>)
+                }
+            }
+            this.setState({
+                guestsCards: newCards,
+                didUpdate: false
+            })
+        }
     }
     
     render(){
@@ -118,7 +144,7 @@ class Guests extends React.Component {
                 </div>
                 
                 <div id='guest-card'>
-                    {this.state.guests}
+                    {this.state.guestsCards}
                 </div>
             </React.Fragment>
         )

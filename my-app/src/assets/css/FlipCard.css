@@ -1,6 +1,6 @@
 .card-container {
-  perspective: 700px;
-  width: 400px;
+  perspective: 3em;
+  width: 3em;
   height: 150px;
   width: 150px;
   display: flex;
@@ -11,6 +11,14 @@
   box-sizing: border-box;
   margin-top: 25px;
   padding: 5px;
+}
+
+.large {
+  width: 6em;
+  height: 6em;
+  font-size: 48px;
+  font-weight: 700;
+  border: 3px solid black;
 }
 
 .card-flip, .card-container {
