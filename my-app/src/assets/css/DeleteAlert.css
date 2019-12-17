@@ -1,0 +1,63 @@
+.alert{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.59);
+}
+
+.alert-container {
+    width: 440px;
+    height: 225px;
+    background: #fff; 
+    padding: 30px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.alert-text-container {
+    color: #575757;
+}
+
+.alert-text-container h1 {
+    font-size: 20px; 
+    font-weight: bold; 
+    margin: 0;
+} 
+
+.alert-text-container p {
+    font-size: 18px;
+}
+
+.alert-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+.alert-btn {
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 5px;
+    outline: 0;
+    border:  0;
+}
+
+.cancel-alert-btn {
+    color: #575757;
+    background: transparent;
+}
+
+.delete-alert-btn {
+    color: #fff;
+    background: #576574;
+    box-shadow: 0px 0px 16px  rgba(0, 0, 0, 0.17);   
+}

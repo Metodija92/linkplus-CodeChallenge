@@ -4,7 +4,7 @@ const BlackList = (props) => {
 
     return(
         <span>
-            <input type='checkbox' name={props.name} onClick={props.getCheckBoxValue}/>
+            <input type='checkbox' name={props.name} onClick={props.getForbiddenNames}/>
             <label htmlFor={props.name}>{props.name}</label>
         </span>
     )

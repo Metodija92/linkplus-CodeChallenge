@@ -54,17 +54,26 @@ class Guests extends React.Component {
         }
     }
         
-    getCheckBoxValue = (event) => {
+    getForbiddenNames = (event) => {
         if(event.target.checked){
-            let index = this.state.firstNames.indexOf(event.target.name)
+            let index = this.state.nameGenerators.indexOf(event.target.name)
             this.setState({
-                firstNames: this.state.firstNames.filter((_, i) => i !== index)
+                nameGenerators: this.state.nameGenerators.filter((_, i) => i !== index)
             })
         } else if(!event.target.checked){
             this.setState({
-                firstNames: [...this.state.firstNames, event.target.name]
+                nameGenerators: [...this.state.nameGenerators, event.target.name]
             })
         }
+    }
+
+    getDeleteIndex = (i) => {
+        let index = this.state.guestsCards.findIndex(x => x.props.name === i)
+        console.log(index)
+        console.log(this.state.guestsCards)
+        this.setState({
+            guestsCards: this.state.guestsCards.filter((_, i) => i !== index)
+        })
     }
 
     componentDidMount(){
@@ -85,12 +94,12 @@ class Guests extends React.Component {
             for (let i = 0; i < nameList.length; i++) {
                 if(nameList[i][0] === "Mrs." || nameList[i][0] === "Mr." || nameList[i][0] === "Ms." || nameList[i][0] === "Miss") {
                     this.setState({
-                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][1]} getCheckBoxValue={this.getCheckBoxValue}/>]
+                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][1]} getForbiddenNames={this.getForbiddenNames}/>]
                     })
                 }
                 else {
                     this.setState({
-                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][0]} getCheckBoxValue={this.getCheckBoxValue}/>]
+                        blackList: [...this.state.blackList, <BlackList key={i} name={nameList[i][0]} getForbiddenNames={this.getForbiddenNames}/>]
                     })
                 }
                 for (let j = 0; j < nameList[i].length; j++) {
@@ -121,10 +130,10 @@ class Guests extends React.Component {
             let newCards = []
             for (let j = 0; j < this.state.guestsList.length; j++) {
                 if(this.state.guestsList[j].originalGuest){
-                    newCards.push(<GuestCard key={j} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job} class={"large"}/>)
+                    newCards.push(<GuestCard key={j} newCard={true} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job} class={"large"} getDeleteIndex={this.getDeleteIndex}/>)
                 } 
                 else {
-                    newCards.push(<GuestCard key={j} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job}/>)
+                    newCards.push(<GuestCard key={j} newCard={true} name={this.state.guestsList[j].name} job={this.state.guestsList[j].job} getDeleteIndex={this.getDeleteIndex}/>)
                 }
             }
             this.setState({
