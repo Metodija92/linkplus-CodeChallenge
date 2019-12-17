@@ -1,7 +1,7 @@
 import React,  { useState } from 'react'
 import '../assets/css/FlipCard.css'
 
-const Users = (props) => {
+const GuestCards = (props) => {
     const [toggle, setToggle] = useState(false);
 
     return(
@@ -25,4 +25,4 @@ const Users = (props) => {
     )
 }
 
-export default Users
+export default GuestCards
