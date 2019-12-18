@@ -8,6 +8,7 @@ import {didUpdate} from '../redux/actions/guestsActions'
 
 import GuestCard from "./GuestCards"
 import DeleteAlert from './DeleteAlert'
+import Loading from './Loading'
 
 class Guests extends React.Component {
     constructor(props) {
@@ -24,12 +25,15 @@ class Guests extends React.Component {
         this.setState({alert: !this.state.alert})
     }
     
-    getDeleteIndex = (i) => {
+    // onClick for the delete btn on the flip cards, gets item for deleting
+    getDeleteIndex = (name, event) => {
         this.showOrHideAlert()
-        let index = this.state.guestsCards.findIndex(x => x.props.name === i)
+        let index = this.state.guestsCards.findIndex(x => x.props.name === name)
         this.setState({deleteIndex: index})
+        event.stopPropagation()
     }
 
+    // onClick for Delete Modal, confirm delete
     confirmCardDelete = () => {
         this.showOrHideAlert()
         this.setState({
@@ -37,10 +41,10 @@ class Guests extends React.Component {
         })
     }
 
+    // Activates in componentDidUpdate, searches duplicates after generating new guests
     duplicateSearch = () => {
         let counter = 0
-        let result = { }
-        
+        let result = {}
         if(this.props.guestsList.length > 10 && this.state.guestsCards.length <= 10){
             let data = [...this.props.guestsList]
             for (let i = 0; i < data.length; i++) {
@@ -52,7 +56,6 @@ class Guests extends React.Component {
                 result[this.state.guestsCards[i].props.name] = (result[this.state.guestsCards[i].props.name] || 0) + 1
             }
         }
-
         Object.keys(result).map(key => ({ [key]: result[key] }))
         for (let j in result) {
             if (result[j] > 1) {
@@ -64,6 +67,7 @@ class Guests extends React.Component {
         this.setState({dCounter: counter})
     }
 
+    // onClick for DEDUPLICATE btn, delete duplicate cards
     deduplicate = () => {
         let test = [...this.state.guestsCards]
         test = test.filter((thing, index, self) => (
@@ -88,6 +92,7 @@ class Guests extends React.Component {
         })
     }
 
+    // Triggers after the onClick Generate Guests btn
     componentDidUpdate(){
         if(this.props.didUpdate) {
             let newCards = []
@@ -110,12 +115,13 @@ class Guests extends React.Component {
     render(){
         return(
             <React.Fragment>
-                {this.state.alert ? <DeleteAlert /*del={del}*/showOrHideAlert={this.showOrHideAlert} confirmCardDelete={this.confirmCardDelete}/> : null}
+                {this.state.alert ? <DeleteAlert showOrHideAlert={this.showOrHideAlert} confirmCardDelete={this.confirmCardDelete}/> : null}
                 <div>
-                    <div>
-                        <p onClick={this.duplicateSearch}>Duplicate count: {this.state.dCounter}</p>
-                        {this.state.dCounter > 0 ? <button onClick={this.deduplicate}>DEDUPLICATE</button> : null}
+                    <div id='count'>
+                        <span> Duplicate count: {this.state.dCounter} </span>
+                        {this.state.dCounter > 0 ? <button className='top-side-btn' onClick={this.deduplicate}>DEDUPLICATE</button> : null}
                     </div>
+                    {this.state.guestsCards.length < 10 ? <Loading /> : null}
                     <div id='guest-card'>
                         {this.state.guestsCards}
                     </div>

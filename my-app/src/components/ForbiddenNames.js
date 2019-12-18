@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import '../assets/css/ForbiddenNames.css'
 
 import store from '../redux/store'
 import { connect } from 'react-redux'
@@ -37,7 +38,7 @@ class ForbiddenNames extends React.Component {
         return job
     }
 
-    
+    // onClick for the Black List Names check-box
     getForbiddenNames = (event) => {
         if(event.target.checked){
             let index = this.state.nameGenerators.indexOf(event.target.name)
@@ -51,6 +52,7 @@ class ForbiddenNames extends React.Component {
         }
     }
     
+    // onClick for Generate Guests btn
     generateGuests = () => {
         let newList = [...this.props.guestsList]
         if(newList.length <= 10) {
@@ -117,9 +119,11 @@ class ForbiddenNames extends React.Component {
     render () {
         return(
             <div id='forbidden-names'>
-                <h3>Forbidden Names</h3>
-                {this.state.blackList}
-                <button onClick={this.generateGuests}>Generate Guests</button>
+                <h2>Forbidden Names</h2>
+                <ul id='ul-list'>
+                    {this.state.blackList}
+                </ul>
+                <button className='top-side-btn' onClick={this.generateGuests}>Generate Guests</button>
             </div>
         )
     }

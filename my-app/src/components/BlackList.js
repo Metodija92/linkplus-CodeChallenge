@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 const BlackList = (props) => {
 
     return(
-        <span>
+        <li>
             <input type='checkbox' name={props.name} onClick={props.getForbiddenNames}/>
             <label htmlFor={props.name}>{props.name}</label>
-        </span>
+        </li>
     )
 }
 

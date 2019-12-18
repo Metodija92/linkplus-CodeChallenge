@@ -9,7 +9,7 @@ const GuestCards = (props) => {
             
             <div className={flip ? `card-container ${props.class}`  : `card-container ${props.class} card-flip`} onClick={() => setFlip(!flip)}>
                 {props.newCard ? 
-                    <button className="edit-del-btn far fa-trash-alt" id='del-btn' onClick={() => props.getDeleteIndex(props.name)}> </button>
+                    <button className="edit-del-btn far fa-trash-alt" id='del-btn' onClick={(event) => props.getDeleteIndex(props.name, event)}> </button>
                 : null
                 }
 

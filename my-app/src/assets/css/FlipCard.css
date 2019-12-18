@@ -1,8 +1,9 @@
 .card-container {
-  perspective: 3em;
-  width: 3em;
-  height: 150px;
-  width: 150px;
+  perspective: 700px;
+  background-color: #53b0ae;
+  height: 200px;
+  width: 200px;
+  font-size: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,8 +15,8 @@
 }
 
 .large {
-  width: 6em;
-  height: 6em;
+  width: 400px;
+  height: 300px;
   font-size: 48px;
   font-weight: 700;
   border: 3px solid black;
@@ -46,9 +47,14 @@
   
 .card-flip {
   transform: rotateY(180deg);
+  background-color: #80c3e8;
 }
 
 #del-btn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background: transparent;
   width: 25px;
   height: 25px;
   position: fixed;
