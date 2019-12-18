@@ -4,7 +4,7 @@ import '../assets/css/Guests.css'
 
 import store from '../redux/store'
 import { connect } from 'react-redux'
-import {editGuestsList, didUpdate} from '../redux/actions/guestsActions'
+import {didUpdate} from '../redux/actions/guestsActions'
 
 import GuestCard from "./GuestCards"
 import DeleteAlert from './DeleteAlert'
@@ -38,35 +38,42 @@ class Guests extends React.Component {
     }
 
     duplicateSearch = () => {
-        if(this.props.guestsList.length > 10){
+        let counter = 0
+        let result = { }
+        
+        if(this.props.guestsList.length > 10 && this.state.guestsCards.length <= 10){
             let data = [...this.props.guestsList]
-            let counter = 0
-            let result = { }
             for (let i = 0; i < data.length; i++) {
                 result[data[i].name] = (result[data[i].name] || 0) + 1
             }
-              
-            Object.keys(result).map(key => ({ [key]: result[key] }))
-            for (let j in result) {
-                if (result[j] > 1) {
-                    counter++
-                }
-            }
-            console.log(result)
-            console.log(counter)
-            this.setState({dCounter: counter})
         }
+        if(this.props.guestsList.length > 10 && this.state.guestsCards.length > 10) {
+            for (let i = 0; i < this.state.guestsCards.length; i++) {
+                result[this.state.guestsCards[i].props.name] = (result[this.state.guestsCards[i].props.name] || 0) + 1
+            }
+        }
+
+        Object.keys(result).map(key => ({ [key]: result[key] }))
+        for (let j in result) {
+            if (result[j] > 1) {
+                counter++
+            }
+        }
+        console.log(result)
+        console.log(counter)
+        this.setState({dCounter: counter})
     }
 
     deduplicate = () => {
-        let data = [...this.props.guestsList]
-        data = data.filter((thing, index, self) =>
+        let test = [...this.state.guestsCards]
+        test = test.filter((thing, index, self) => (
             index === self.findIndex((t) => (
-                t.name === thing.name
+                t.props.name === thing.props.name
             ))
-        )
-        store.dispatch(editGuestsList(data))
-        store.dispatch(didUpdate(true))
+        ))
+        console.log(test)
+        this.setState({guestsCards: test})
+        setTimeout(() => { this.duplicateSearch(); }, 100);
     }
 
     componentDidMount(){
@@ -105,11 +112,13 @@ class Guests extends React.Component {
             <React.Fragment>
                 {this.state.alert ? <DeleteAlert /*del={del}*/showOrHideAlert={this.showOrHideAlert} confirmCardDelete={this.confirmCardDelete}/> : null}
                 <div>
-                    <p>Duplicate count: {this.state.dCounter}</p>
-                    {this.state.dCounter > 0 ? <button onClick={this.deduplicate}>DEDUPLICATE</button> : null}
-                </div>
-                <div id='guest-card'>
-                    {this.state.guestsCards}
+                    <div>
+                        <p onClick={this.duplicateSearch}>Duplicate count: {this.state.dCounter}</p>
+                        {this.state.dCounter > 0 ? <button onClick={this.deduplicate}>DEDUPLICATE</button> : null}
+                    </div>
+                    <div id='guest-card'>
+                        {this.state.guestsCards}
+                    </div>
                 </div>
             </React.Fragment>
         )

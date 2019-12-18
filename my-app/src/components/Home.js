@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import Guests from "./Guests"
 import ForbiddenNames from './ForbiddenNames'
+import DeleteAlert from './DeleteAlert'
 
 class Home extends React.Component {
     constructor() {
@@ -14,6 +15,7 @@ class Home extends React.Component {
     render(){
         return(
             <React.Fragment>
+                {/* <DeleteAlert/> */}
                 <ForbiddenNames />
                 <Guests />
             </React.Fragment>

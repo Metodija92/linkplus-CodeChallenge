@@ -1,16 +1,8 @@
 import React,  { useState } from 'react'
 import '../assets/css/FlipCard.css'
-import DeleteAlert from './DeleteAlert'
 
 const GuestCards = (props) => {
     const [flip, setFlip] = useState(false);
-
-    // function del(){
-    //     setAlert(!alert)
-    //     props.getDeleteIndex(props.name)
-    // }
-
-    
 
     return(
         <React.Fragment>
