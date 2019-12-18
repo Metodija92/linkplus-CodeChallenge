@@ -7,19 +7,32 @@ import { connect } from 'react-redux'
 import {didUpdate} from '../redux/actions/guestsActions'
 
 import GuestCard from "./GuestCards"
+import DeleteAlert from './DeleteAlert'
 
 class Guests extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            guestsCards: []
+            guestsCards: [],
+            alert: false,
+            deleteIndex: null
         }
     }
 
+    showOrHideAlert = () => {
+        this.setState({alert: !this.state.alert})
+    }
+    
     getDeleteIndex = (i) => {
+        this.showOrHideAlert()
         let index = this.state.guestsCards.findIndex(x => x.props.name === i)
+        this.setState({deleteIndex: index})
+    }
+
+    confirmCardDelete = () => {
+        this.showOrHideAlert()
         this.setState({
-            guestsCards: this.state.guestsCards.filter((_, i) => i !== index)
+            guestsCards: this.state.guestsCards.filter((_, i) => i !== this.state.deleteIndex)
         })
     }
 
@@ -56,7 +69,7 @@ class Guests extends React.Component {
     render(){
         return(
             <React.Fragment>
-                
+                {this.state.alert ? <DeleteAlert /*del={del}*/showOrHideAlert={this.showOrHideAlert} confirmCardDelete={this.confirmCardDelete}/> : null}
                 <div id='guest-card'>
                     {this.state.guestsCards}
                 </div>

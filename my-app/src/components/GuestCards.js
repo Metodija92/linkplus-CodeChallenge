@@ -1,26 +1,23 @@
 import React,  { useState } from 'react'
 import '../assets/css/FlipCard.css'
-import DeleteAlert from './DeleteAlert';
+import DeleteAlert from './DeleteAlert'
 
 const GuestCards = (props) => {
     const [flip, setFlip] = useState(false);
-    const [alert, setAlert] = useState(false);
 
-    function del(){
-        setAlert(!alert)
-        props.getDeleteIndex(props.name)
-    }
+    // function del(){
+    //     setAlert(!alert)
+    //     props.getDeleteIndex(props.name)
+    // }
 
-    function hideAlert(){
-        setAlert(!alert)
-    }
+    
 
     return(
         <React.Fragment>
-            {alert ? <DeleteAlert del={del} hideAlert={hideAlert}/> : null}
+            
             <div className={flip ? `card-container ${props.class}`  : `card-container ${props.class} card-flip`} onClick={() => setFlip(!flip)}>
                 {props.newCard ? 
-                    <button className="edit-del-btn far fa-trash-alt" id='del-btn' onClick={() => setAlert(!alert)}> </button>
+                    <button className="edit-del-btn far fa-trash-alt" id='del-btn' onClick={() => props.getDeleteIndex(props.name)}> </button>
                 : null
                 }
 

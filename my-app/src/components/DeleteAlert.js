@@ -12,8 +12,8 @@ const DeleteAlert = (props) => {
                         <p>Are you sure you want to delete guests card ?</p>
                     </div>
                     <div className="alert-buttons">
-                        <button className="alert-btn cancel-alert-btn" onClick={props.hideAlert}>CANCEL</button>
-                        <button className="alert-btn delete-alert-btn" onClick={props.del}>DELETE</button>
+                        <button className="alert-btn cancel-alert-btn" onClick={props.showOrHideAlert}>CANCEL</button>
+                        <button className="alert-btn delete-alert-btn" onClick={props.confirmCardDelete}>DELETE</button>
                     </div>
                 </div>
             </div>
