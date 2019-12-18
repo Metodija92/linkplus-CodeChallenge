@@ -3,6 +3,9 @@ import React from 'react'
 
 import Home from './components/Home'
 
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
 const app = document.getElementById('app')
 
 const App = () => {
@@ -13,4 +16,8 @@ const App = () => {
     )
 }
 
-ReactDOM.render(<App />, app)
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider> , app)
+    
