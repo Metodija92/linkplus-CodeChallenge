@@ -6,8 +6,7 @@ module.exports = {
     
     output: {
         path: path.resolve(__dirname, 'src'),
-        filename: 'bundle.js',
-        // publicPath: '/src/'
+        filename: 'bundle.js'
     },
 
     devServer: {
@@ -15,12 +14,11 @@ module.exports = {
         compress: true,
         port: 8080,
         historyApiFallback: true
-        // publicPath: '/src/'
     },
 
     module: {
         rules: [
-            { // Ova se rules za jsx
+            {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: [
@@ -28,7 +26,7 @@ module.exports = {
                     "source-map-loader"
                 ]
             },
-            { // ova se rules za css loader
+            {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader']
             }
